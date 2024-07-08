@@ -1,6 +1,8 @@
-# Repository to demo Securing ML Models with RHOAI
+# Securing ML Models with RHOAI Serving Runtime and Authorino
 
-## Install
+This demo shows how to secure a Model Server deployed with RHOAI Serving Runtime using Authorino.
+
+## Install RHOAI, Authorino, and other Operators required
 
 * Install the RHOAI Operators required (including Authorino):
 
@@ -14,6 +16,12 @@ kubectl apply -k rhoai-secured/overlays/operators/
 kubectl apply -k rhoai-secured/overlays/instances/
 ```
 
+* (Optional) Deploy GPU Instances if you don't have them:
+
+```bash
+bash rhoai-secured/overlays/demo-prep/gpu_instances.sh
+```
+
 * Configure Demo Requirements:
 
 ```bash
@@ -22,9 +30,19 @@ kubectl apply -k rhoai-secured/overlays/demo-prep
 
 ## Deploy and Secure the Model Server
 
+We will use RHOAI Serving Runtime to deploy the Model Server and Authorino to secure the inference endpoint.
+
 * Clone the repository in the Workbench (TensorFlow image) and run the 1_download_save.ipynb notebook to download the model and save it in s3.
 
-TBD
+> NOTE: We will use the `llama3` model in this demo, but you can use any other compatible model.
+
+* Deploy the Model Server with the RHOAI Serving Runtime:
+
+```bash
+kubectl apply -f demo/inference_service.yaml
+```
+
+> NOTE: We will use the Out of the Box vLLM KServe Model Server in this demo, but you can use any other compatible model server.
 
 ## Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino
 
@@ -132,7 +150,7 @@ curl -vk $infer_url \
 }
 ```
 
-* As we can see, the request was authorized because the Bearer Token was provided.
+* As we can see, the request was authorized (200) because the Bearer Token was provided.
 
 ### Testing the Model Server **without** the Bearer Token
 
@@ -217,7 +235,7 @@ curl -vk $infer_url \
 }
 ```
 
-As we can see, the request was unauthorized because the Bearer Token was not provided.
+As we can see, the request was unauthorized (401) because the Bearer Token was not provided.
 
 ## Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino
 
