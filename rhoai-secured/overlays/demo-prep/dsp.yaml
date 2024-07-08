@@ -1,0 +1,11 @@
+kind: Project
+apiVersion: project.openshift.io/v1
+metadata:
+  name: demo-rhoai-secured
+  labels:
+    kubernetes.io/metadata.name: demo-rhoai-secured
+    opendatahub.io/dashboard: 'true'
+  annotations:
+    openshift.io/description: demo-rhoai-secured
+    openshift.io/display-name: demo-rhoai-secured
+spec: {}

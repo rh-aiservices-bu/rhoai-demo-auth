@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Add the namespace to the resources
+namespace: demo-rhoai-secured
+
+# These are the Operators required to install the RHOAI + KServe + Authorino Stack
+resources:
+  - dsp.yaml
+  - minio.yaml
