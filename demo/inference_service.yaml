@@ -1,0 +1,38 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    openshift.io/display-name: llama3
+    security.opendatahub.io/enable-auth: "true"
+    serving.knative.openshift.io/enablePassthrough: "true"
+    sidecar.istio.io/inject: "true"
+    sidecar.istio.io/rewriteAppHTTPProbers: "true"
+  name: llama3
+  namespace: demo-rhoai-secured
+  labels:
+    opendatahub.io/dashboard: "true"
+spec:
+  predictor:
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      modelFormat:
+        name: vLLM
+      name: ""
+      resources:
+        limits:
+          cpu: "10"
+          memory: 20Gi
+          nvidia.com/gpu: "1"
+        requests:
+          cpu: "6"
+          memory: 16Gi
+          nvidia.com/gpu: "1"
+      runtime: llama3
+      storage:
+        key: aws-connection-my-storage
+        path: models/Meta-Llama-3-8B
+    tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
