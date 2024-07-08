@@ -239,4 +239,5 @@ As we can see, the request was unauthorized (401) because the Bearer Token was n
 
 ## Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino
 
-* Open the Jupyter Notebook in the Workbench and run the `rest_requests.ipynb` notebook to test the Model Server with and without the Bearer Token.
+* Open the Jupyter Notebook in the Workbench and run the `rest_requests.ipynb` notebook in the demo folder
+  to test the Model Server with and without the Bearer Token.
