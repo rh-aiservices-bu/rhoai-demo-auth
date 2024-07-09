@@ -23,6 +23,8 @@ For more information check the [RHOAI Serving Runtime documentation - Installing
 
 ## 1. Install RHOAI, Authorino, and other Operators required
 
+> IMPORTANT: These demo is assuming that you have not RHOAI nor Authorino installed, just a plain OpenShift cluster from scratch (with a GPU node optionally).
+
 * Install the RHOAI Operators required (including Authorino):
 
 ```bash
@@ -46,6 +48,8 @@ bash rhoai-secured/overlays/demo-prep/gpu-machineset.sh
 ```bash
 kubectl apply -k rhoai-secured/overlays/demo-prep
 ```
+
+> NOTE: This is executed and prepared with yaml-based but everything can be done with the OpenShift and OpenShift AI UI Console as well.
 
 ## 2. Deploy and Secure the Model Server
 
