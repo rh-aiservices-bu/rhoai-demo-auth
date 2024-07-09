@@ -38,7 +38,7 @@ kubectl apply -k rhoai-secured/overlays/instances/
 * (Optional) Deploy GPU Instances if you don't have them:
 
 ```bash
-bash rhoai-secured/overlays/demo-prep/gpu_instances.sh
+bash rhoai-secured/overlays/demo-prep/gpu-machineset.sh
 ```
 
 * Configure Demo Requirements:
