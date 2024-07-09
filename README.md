@@ -1,7 +1,5 @@
 # Securing ML Models with RHOAI Serving Runtime and Authorino
 
-## 1. Context
-
 Securing machine learning (ML) models is essential to protect sensitive data and ensure reliable performance. ML models often handle confidential and proprietary information, making them targets for data breaches and unauthorized access. 
 
 Without proper security, these models are vulnerable to tampering and exploitation, which can lead to incorrect predictions, data leaks, and a loss of trust from users and stakeholders.
@@ -12,7 +10,18 @@ Securing the inference endpoint with token authorization (using [Authorino](http
 
 For more information check the [RHOAI Serving Runtime documentation - Installing Authorino Operator](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.10/html/serving_models/serving-large-models_serving-large-models#installing-the-authorino-operator_serving-large-models).
 
-## 2. Install RHOAI, Authorino, and other Operators required
+## Table of Contents
+1. [Securing ML Models with RHOAI Serving Runtime and Authorino](#securing-ml-models-with-rhoai-serving-runtime-and-authorino)
+2. [Install RHOAI, Authorino, and other Operators required](#install-rhoai-authorino-and-other-operators-required)
+3. [Deploy and Secure the Model Server](#deploy-and-secure-the-model-server)
+4. [Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino](#testing-the-model-server-curl-deployed-with-authentication-enabled-using-authorino)
+  - [Getting the Bearer Token](#getting-the-bearer-token)
+  - [Testing the Model Server with the Bearer Token](#testing-the-model-server-with-the-bearer-token)
+  - [Testing the Model Server without Bearer Token](#testing-the-model-server-curl-deployed-without-bearer-token)
+5. [Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino](#testing-the-model-server-jupyter-notebook-deployed-with-authentication-enabled-using-authorino)
+6. [Links of Interest](#links-of-interest)
+
+## 1. Install RHOAI, Authorino, and other Operators required
 
 * Install the RHOAI Operators required (including Authorino):
 
@@ -38,7 +47,7 @@ bash rhoai-secured/overlays/demo-prep/gpu_instances.sh
 kubectl apply -k rhoai-secured/overlays/demo-prep
 ```
 
-## 3. Deploy and Secure the Model Server
+## 2. Deploy and Secure the Model Server
 
 We will use RHOAI Serving Runtime to deploy the Model Server and Authorino to secure the inference endpoint.
 
@@ -54,12 +63,12 @@ kubectl apply -f demo/inference_service.yaml
 
 > NOTE: We will use the Out of the Box vLLM KServe Model Server in this demo, but you can use any other compatible model server.
 
-## 4. Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino
+## 3. Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino
 
 Because we secured the inference endpoint of our server by enabling token authorization, 
 we must provide a Bearer Token in the request headers to access the endpoint.
 
-### 4.1 Getting the Bearer Token
+### 3.1 Getting the Bearer Token
 
 In the RHOAI Dashboard check the Token Secret below in your Model Server section:
 
@@ -67,7 +76,7 @@ In the RHOAI Dashboard check the Token Secret below in your Model Server section
 
 If you want to have more information around getting the Bearer Token check [the official RHOAI Serving Runtime docs](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.10/html/serving_models/serving-large-models_serving-large-models#accessing-authorization-token-for-deployed-model_serving-large-models).
 
-### 4.2 Testing the Model Server **with the Bearer Token**
+### 3.1.1 Testing the Model Server **with the Bearer Token**
 
 * If we try to access the Model Server URL with the Bearer Token, we will get a 200 OK response:
 
@@ -162,7 +171,7 @@ curl -vk $infer_url \
 
 * As we can see, the request was authorized (200) because the Bearer Token was provided.
 
-### 4.3 1Testing the Model Server **without** the Bearer Token
+### 3.2 Testing the Model Server **without Bearer Token**
 
 * If we try to access the Model Server URL without the Bearer Token, we will get a 401 Unauthorized error:
 
@@ -247,7 +256,11 @@ curl -vk $infer_url \
 
 As we can see, the request was unauthorized (401) because the Bearer Token was not provided.
 
-## Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino
+## 4. Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino
 
-* Open the Jupyter Notebook in the Workbench and run the `rest_requests.ipynb` notebook in the demo folder
-  to test the Model Server with and without the Bearer Token.
+* Open the Jupyter Notebook in the Workbench and run the [`rest_requests.ipynb` notebook](./demo/2_rest_requests.ipynb) in the demo folder to test the Model Server with and without the Bearer Token.
+
+## 5. Links of Interest
+
+* [Simplify API security with Authorino](https://developers.redhat.com/articles/2021/06/18/authorino-making-open-source-cloud-native-api-security-simple-and-flexible#a_use_case_for_authorino)
+* [Authorino Documentation](https://github.com/Kuadrant/authorino/blob/main/docs/README.md)
