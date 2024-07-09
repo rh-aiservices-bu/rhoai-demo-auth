@@ -11,15 +11,15 @@ Securing the inference endpoint with token authorization (using [Authorino](http
 For more information check the [RHOAI Serving Runtime documentation - Installing Authorino Operator](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.10/html/serving_models/serving-large-models_serving-large-models#installing-the-authorino-operator_serving-large-models).
 
 ## Table of Contents
-1. [Securing ML Models with RHOAI Serving Runtime and Authorino](#securing-ml-models-with-rhoai-serving-runtime-and-authorino)
-2. [Install RHOAI, Authorino, and other Operators required](#install-rhoai-authorino-and-other-operators-required)
-3. [Deploy and Secure the Model Server](#deploy-and-secure-the-model-server)
-4. [Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino](#testing-the-model-server-curl-deployed-with-authentication-enabled-using-authorino)
-  - [Getting the Bearer Token](#getting-the-bearer-token)
-  - [Testing the Model Server with the Bearer Token](#testing-the-model-server-with-the-bearer-token)
-  - [Testing the Model Server without Bearer Token](#testing-the-model-server-curl-deployed-without-bearer-token)
-5. [Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino](#testing-the-model-server-jupyter-notebook-deployed-with-authentication-enabled-using-authorino)
-6. [Links of Interest](#links-of-interest)
+- [Securing ML Models with RHOAI Serving Runtime and Authorino](#securing-ml-models-with-rhoai-serving-runtime-and-authorino)
+  - [1. Install RHOAI, Authorino, and other Operators required](#1-install-rhoai-authorino-and-other-operators-required)
+  - [2. Deploy and Secure the Model Server](#2-deploy-and-secure-the-model-server)
+  - [3. Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino](#3-testing-the-model-server-curl-deployed-with-authentication-enabled-using-authorino)
+    - [3.1 Getting the Bearer Token](#31-getting-the-bearer-token)
+    - [3.1.1 Testing the Model Server **with the Bearer Token**](#311-testing-the-model-server-with-the-bearer-token)
+    - [3.2 Testing the Model Server **without Bearer Token**](#32-testing-the-model-server-without-bearer-token)
+  - [4. Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino](#4-testing-the-model-server-jupyter-notebook-deployed-with-authentication-enabled-using-authorino)
+  - [5. Links of Interest](#5-links-of-interest)
 
 ## 1. Install RHOAI, Authorino, and other Operators required
 
