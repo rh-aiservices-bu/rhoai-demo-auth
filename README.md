@@ -1,8 +1,18 @@
 # Securing ML Models with RHOAI Serving Runtime and Authorino
 
+## 1. Context
+
+Securing machine learning (ML) models is essential to protect sensitive data and ensure reliable performance. ML models often handle confidential and proprietary information, making them targets for data breaches and unauthorized access. 
+
+Without proper security, these models are vulnerable to tampering and exploitation, which can lead to incorrect predictions, data leaks, and a loss of trust from users and stakeholders.
+
 This demo shows how to secure a Model Server deployed with RHOAI Serving Runtime using Authorino.
 
-## Install RHOAI, Authorino, and other Operators required
+Securing the inference endpoint with token authorization (using [Authorino](https://github.com/kuadrant/authorino)) means that a Bearer Token must be included in the request headers to access the model. Without this token, any request will result in a 401 Unauthorized error. This security measure ensures that only authenticated users can interact with the model, preventing unauthorized access and misuse of resources, and maintaining the integrity and trustworthiness of the model.
+
+For more information check the [RHOAI Serving Runtime documentation - Installing Authorino Operator](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.10/html/serving_models/serving-large-models_serving-large-models#installing-the-authorino-operator_serving-large-models).
+
+## 2. Install RHOAI, Authorino, and other Operators required
 
 * Install the RHOAI Operators required (including Authorino):
 
@@ -28,7 +38,7 @@ bash rhoai-secured/overlays/demo-prep/gpu_instances.sh
 kubectl apply -k rhoai-secured/overlays/demo-prep
 ```
 
-## Deploy and Secure the Model Server
+## 3. Deploy and Secure the Model Server
 
 We will use RHOAI Serving Runtime to deploy the Model Server and Authorino to secure the inference endpoint.
 
@@ -44,12 +54,12 @@ kubectl apply -f demo/inference_service.yaml
 
 > NOTE: We will use the Out of the Box vLLM KServe Model Server in this demo, but you can use any other compatible model server.
 
-## Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino
+## 4. Testing the Model Server (Curl) deployed with Authentication Enabled using Authorino
 
 Because we secured the inference endpoint of our server by enabling token authorization, 
 we must provide a Bearer Token in the request headers to access the endpoint.
 
-### Getting the Bearer Token
+### 4.1 Getting the Bearer Token
 
 In the RHOAI Dashboard check the Token Secret below in your Model Server section:
 
@@ -57,7 +67,7 @@ In the RHOAI Dashboard check the Token Secret below in your Model Server section
 
 If you want to have more information around getting the Bearer Token check [the official RHOAI Serving Runtime docs](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.10/html/serving_models/serving-large-models_serving-large-models#accessing-authorization-token-for-deployed-model_serving-large-models).
 
-### Testing the Model Server **with the Bearer Token**
+### 4.2 Testing the Model Server **with the Bearer Token**
 
 * If we try to access the Model Server URL with the Bearer Token, we will get a 200 OK response:
 
@@ -152,7 +162,7 @@ curl -vk $infer_url \
 
 * As we can see, the request was authorized (200) because the Bearer Token was provided.
 
-### Testing the Model Server **without** the Bearer Token
+### 4.3 1Testing the Model Server **without** the Bearer Token
 
 * If we try to access the Model Server URL without the Bearer Token, we will get a 401 Unauthorized error:
 
