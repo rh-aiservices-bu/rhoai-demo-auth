@@ -19,7 +19,8 @@ For more information check the [RHOAI Serving Runtime documentation - Installing
     - [3.1.1 Testing the Model Server **with the Bearer Token**](#311-testing-the-model-server-with-the-bearer-token)
     - [3.2 Testing the Model Server **without Bearer Token**](#32-testing-the-model-server-without-bearer-token)
   - [4. Testing the Model Server (Jupyter Notebook) deployed with Authentication Enabled using Authorino](#4-testing-the-model-server-jupyter-notebook-deployed-with-authentication-enabled-using-authorino)
-  - [5. Links of Interest](#5-links-of-interest)
+  - [5. Rotating the Bearer Token](#5-rotating-the-bearer-token)
+  - [6. Links of Interest](#5-links-of-interest)
 
 ## 1. Install RHOAI, Authorino, and other Operators required
 
@@ -260,7 +261,24 @@ As we can see, the request was unauthorized (401) because the Bearer Token was n
 
 * Open the Jupyter Notebook in the Workbench and run the [`rest_requests.ipynb` notebook](./demo/2_rest_requests.ipynb) in the demo folder to test the Model Server with and without the Bearer Token.
 
-## 5. Links of Interest
+## 5. Rotating the Bearer Token
+
+* To rotate the Bearer Token, you can rotate the Token inside of the Secret that Authorino and RHOAI creates alongside with Inference Service:
+
+```bash
+NEW_TOKEN="xxx"
+TOKEN_NAME="llama3auth"
+NAMESPACE="demo-rhoai-secured"
+MODEL_SERVER="llama3"
+
+kubectl patch secret $TOKEN_NAME-$MODEL_SERVER-sa -n $NAMESPACE --type='json' -p='[{"op": "replace", "path": "/data/token", "value": "'"$(echo -n $NEW_TOKEN | base64)"'"}]'
+```
+
+The token is stored in the `token` key of the Secret in base64 format. The command above will replace the current token with the new one.
+
+> NOTE: the NEW_TOKEN is the new API Key you want to use, but needs to have the same format/length as the previous one. Check the[Authorino documentation Api Key](https://github.com/Kuadrant/authorino/blob/main/docs/features.md#api-key-authenticationapikey) for more information.
+
+## 6. Links of Interest
 
 * [Simplify API security with Authorino](https://developers.redhat.com/articles/2021/06/18/authorino-making-open-source-cloud-native-api-security-simple-and-flexible#a_use_case_for_authorino)
 * [Authorino Documentation](https://github.com/Kuadrant/authorino/blob/main/docs/README.md)
